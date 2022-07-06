@@ -14,7 +14,8 @@ RUN apt-get install -y --force-yes --no-install-recommends \
     dtach \
     imagemagick \
     libffi-dev \
-		gnupg
+		gnupg \
+		gcc
 
 # node.js install
 RUN curl -sSL https://deb.nodesource.com/setup_16.x | bash - \
