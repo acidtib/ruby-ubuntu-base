@@ -1,6 +1,9 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt remove --autoremove ruby && apt-get install -y --no-install-recommends \
+    make \
 		autoconf \
     libssl-dev \
     libreadline-dev \
@@ -12,10 +15,10 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 		ca-certificates \
     vim \
     dtach \
-    imagemagick \
     libffi-dev \
-		gnupg \
-		gcc
+		libcurl4-openssl-dev \
+		gcc \
+		tzdata
 
 # node.js install
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
