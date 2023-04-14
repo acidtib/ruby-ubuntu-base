@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM registry.docker.com/library/ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -20,13 +20,14 @@ RUN apt-get update && apt remove --autoremove ruby && apt-get install -y --no-in
 		gcc \
 		tzdata
 
-# node.js install
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get update && apt-get install -y --no-install-recommends nodejs
-RUN npm install npm@latest --location=global
-
-# # yarn install
-RUN npm install yarn --location=global
+# Install JavaScript dependencies
+ARG NODE_VERSION=16.19.1
+ARG YARN_VERSION=1.22.19
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
 
 RUN apt-get clean \
 		&&  rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
